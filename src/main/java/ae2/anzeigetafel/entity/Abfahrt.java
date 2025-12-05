@@ -14,7 +14,7 @@ public class Abfahrt {
     @Id                      // Primärschlüssel
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // ID wird automatisch von der Datenbank generiert (AUTO_INCREMENT / IDENTITY)
-    private Integer id;
+    private Integer abfahrt_id;
 
     @ManyToOne               // Viele Abfahrten gehören zu einer Linie
     @JoinColumn(name = "linie_id")  // Fremdschlüssel in der abfahrt-Tabelle
@@ -31,14 +31,16 @@ public class Abfahrt {
     private String ziel;     // Fahrtziel (z. B. "Köln Hbf")
 
     @Column(name = "geplante_abfahrt")
-    private LocalDateTime geplantAbfahrt;   // Offiziell geplante Abfahrtszeit
+    private LocalDateTime geplante_abfahrt;   // Offiziell geplante Abfahrtszeit
 
     @Column(name = "tatsaechliche_abfahrt")
-    private LocalDateTime tatsaechlicheAbfahrt;   // Echtzeit-Abfahrtszeit, wenn vorhanden
+    private LocalDateTime tatsaechliche_abfahrt;   // Echtzeit-Abfahrtszeit, wenn vorhanden
 
     @Column(name = "verzoegerung_minuten")
-    private Integer verzoegerungMinuten;    // Verzögerung in Minuten
+    private Integer verzoegerung_minuten;    // Verzögerung in Minuten
 
-    @OneToMany(mappedBy = "abfahrt")  // Eine Abfahrt kann mehrere Störungen haben
-    private List<Stoerung> stoerungen; // Liste aller Störungen zur Abfahrt
+    @OneToMany(mappedBy = "abfahrt")
+    private List<Stoerung> stoerungen;
+
+
 }

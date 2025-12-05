@@ -21,9 +21,24 @@ public class AbfahrtController {
         return abfahrtService.getAbfahrtById(id);
     }
 
+
+
     @GetMapping("/linie/{linienId}")
     public List<AbfahrtDTO> getAbfahrtenByLinie(@PathVariable Integer linienId) {
         // Gibt alle Abfahrten zu einer bestimmten Linie zurück
         return abfahrtService.getAbfahrtenByLinie(linienId);
     }
+
+    @GetMapping("/test")
+    public String testDb() {
+        long count = abfahrtService.count();
+        return "Abfahrten in DB: " + count;
+    }
+
+    //TEST
+    @GetMapping
+    public List<AbfahrtDTO> getAlleAbfahrten() {
+        return abfahrtService.findAllAbfahrten();
+    }
+
 }

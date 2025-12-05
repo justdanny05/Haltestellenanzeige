@@ -15,9 +15,10 @@ public interface AbfahrtRepository extends JpaRepository<Abfahrt, Integer> {
     // Es erbt Standard-Methoden wie findAll(), findById(), save() usw.
 
     @Query("SELECT a FROM Abfahrt a " +
-            "WHERE a.haltestelle.id = :haltestelleId " +                      // nur Abfahrten der gewählten Haltestelle
-            "AND (a.tatsaechlicheAbfahrt >= :now OR a.geplantAbfahrt >= :now) " + // nur zukünftige Abfahrten
-            "ORDER BY COALESCE(a.tatsaechlicheAbfahrt, a.geplantAbfahrt) ASC")    // sortiert nach der echten Abfahrtszeit
+            "WHERE a.haltestelle.id = :haltestelleId " +
+            "AND (a.tatsaechliche_abfahrt >= :now OR a.geplante_abfahrt >= :now) " +
+            "ORDER BY COALESCE(a.tatsaechliche_abfahrt, a.geplante_abfahrt) ASC")
+
     List<Abfahrt> findUpcomingByHaltestelleId(
             @Param("haltestelleId") Integer haltestelleId,   // ID der Haltestelle
             @Param("now") LocalDateTime now                   // aktueller Zeitpunkt

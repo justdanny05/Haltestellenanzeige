@@ -1,26 +1,29 @@
-// Stoerung.java
 package ae2.anzeigetafel.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-@Entity                          // Diese Klasse ist eine Tabelle in der Datenbank
-@Data                            // Lombok: erstellt Getter/Setter automatisch
-@Table(name = "stoerung")        // Tabellenname
+@Entity
+@Data
+@Table(name = "stoerung")
 public class Stoerung {
 
-    @Id                           // Primärschlüssel
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "stoerung_id")
+    private Integer stoerung_id;
 
-    @ManyToOne                    // Eine Störung gehört zu einer Abfahrt
-    @JoinColumn(name = "abfahrt_id")
+    @Column(name = "typ")
+    private String typ;
+
+    @Column(name = "nachricht")
+    private String nachricht;
+
+    @Column(name = "zeitstempel")
+    private LocalDateTime zeitstempel;
+
+    @ManyToOne
+    @JoinColumn(name = "abfahrt_id", nullable = false)
     private Abfahrt abfahrt;
-
-    private String typ;           // Art der Störung (z. B. "Signalstörung")
-
-    private String nachricht;     // Beschreibung/Details zur Störung
-
-    private LocalDateTime zeitstempel; // Zeitpunkt, wann die Störung gemeldet wurde
 }

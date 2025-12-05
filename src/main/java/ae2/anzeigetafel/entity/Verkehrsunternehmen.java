@@ -11,16 +11,16 @@ public class Verkehrsunternehmen {
 
     @Id                                 // Primärschlüssel
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer verkehrsunternehmen_id;
 
     private String name;                // Name des Verkehrsunternehmens (z.B. "KVB")
 
     @Column(name = "logo_url")
-    private String logoUrl;             // URL zum Logo (optional für Anzeige)
+    private String logo_url;             // URL zum Logo (optional für Anzeige)
 
     @OneToMany(mappedBy = "verkehrsunternehmen")
     private List<Haltestelle> haltestellen;  // Alle Haltestellen dieses Unternehmens
 
     @OneToMany(mappedBy = "verkehrsunternehmen")
-    private List<Linie> linien;             // Alle Linien dieses Unternehmens
+    private List<Linie> linie;             // Alle Linien dieses Unternehmens
 }

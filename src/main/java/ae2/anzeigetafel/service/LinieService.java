@@ -36,6 +36,6 @@ public class LinieService {
                 .orElseThrow(() -> new RuntimeException("Verkehrsunternehmen nicht gefunden"));
 
         // Gibt alle Linien dieses Unternehmens zurück
-        return vu.getLinien();
+        return vu.getLinie();
     }
 }

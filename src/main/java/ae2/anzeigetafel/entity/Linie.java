@@ -11,7 +11,7 @@ public class Linie {
 
     @Id                            // Primärschlüssel
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer linie_id;
 
     @Column(name = "liniennummer")
     private String liniennummer;   // Nummer der Linie (z. B. "U6")
@@ -23,5 +23,5 @@ public class Linie {
     private Verkehrsunternehmen verkehrsunternehmen;
 
     @OneToMany(mappedBy = "linie")
-    private List<Abfahrt> abfahrten; // Alle Abfahrten dieser Linie
+    private List<Abfahrt> linie; // Alle Abfahrten dieser Linie
 }

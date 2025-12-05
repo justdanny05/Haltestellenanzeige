@@ -36,6 +36,6 @@ public class BahnsteigService {
                 .orElseThrow(() -> new RuntimeException("Haltestelle nicht gefunden"));
 
         // Gibt alle Bahnsteige dieser Haltestelle zurück
-        return haltestelle.getBahnsteige();
+        return haltestelle.getBahnsteig();
     }
 }

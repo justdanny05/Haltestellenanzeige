@@ -12,53 +12,73 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service                                   // Service für Logik rund um Abfahrten
-@RequiredArgsConstructor                   // Automatischer Konstruktor für finale Felder
-@Transactional(readOnly = true)            // Nur lesender Zugriff auf die DB
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AbfahrtService {
 
-    private final AbfahrtRepository abfahrtRepository; // Zugriff auf Abfahrten
+    private final AbfahrtRepository abfahrtRepository;
 
+    // ─────────────────────────────────────────────────────
+    //   EINZELNE ABFAHRT LADEN
+    // ─────────────────────────────────────────────────────
     public AbfahrtDTO getAbfahrtById(Integer id) {
-        // Einzelne Abfahrt laden oder Fehlermeldung werfen
         Abfahrt abfahrt = abfahrtRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Abfahrt nicht gefunden"));
 
         return mapToAbfahrtDTO(abfahrt, LocalDateTime.now());
     }
 
+    // ─────────────────────────────────────────────────────
+    //   ALLE ABFAHRTEN NACH LINIEN-ID LADEN
+    // ─────────────────────────────────────────────────────
     public List<AbfahrtDTO> getAbfahrtenByLinie(Integer linienId) {
-        // Alle Abfahrten laden und nach Linien-ID filtern
-        List<Abfahrt> abfahrten = abfahrtRepository.findAll().stream()
-                .filter(a -> a.getLinie().getId().equals(linienId))
-                .collect(Collectors.toList());
-
         LocalDateTime now = LocalDateTime.now();
 
-        // Jede Abfahrt in ein DTO umwandeln
-        return abfahrten.stream()
+        return abfahrtRepository.findAll().stream()
+                .filter(a -> a.getLinie().getLinie_id().equals(linienId))
                 .map(a -> mapToAbfahrtDTO(a, now))
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // Wandelt eine Abfahrt in ein AbfahrtDTO um
+    // ─────────────────────────────────────────────────────
+    //   ANZAHL DER ABFAHRTEN (für /test)
+    // ─────────────────────────────────────────────────────
+    public long count() {
+        return abfahrtRepository.count();
+    }
+
+    // ─────────────────────────────────────────────────────
+    //   ALLE ABFAHRTEN LADEN (Debug)
+    // ─────────────────────────────────────────────────────
+    public List<AbfahrtDTO> findAllAbfahrten() {
+        LocalDateTime now = LocalDateTime.now();
+
+        return abfahrtRepository.findAll().stream()
+                .map(a -> mapToAbfahrtDTO(a, now))
+                .toList();
+    }
+
+    // ─────────────────────────────────────────────────────
+    //   MAPPING: ENTITY → DTO
+    // ─────────────────────────────────────────────────────
     private AbfahrtDTO mapToAbfahrtDTO(Abfahrt abfahrt, LocalDateTime now) {
 
-        // Tatsächliche oder geplante Abfahrtszeit bestimmen
-        LocalDateTime abfahrtZeit = abfahrt.getTatsaechlicheAbfahrt() != null
-                ? abfahrt.getTatsaechlicheAbfahrt()
-                : abfahrt.getGeplantAbfahrt();
+        // Tatsächliche Abfahrtszeit oder geplante
+        LocalDateTime abfahrtZeit =
+                abfahrt.getTatsaechliche_abfahrt() != null
+                        ? abfahrt.getTatsaechliche_abfahrt()
+                        : abfahrt.getGeplante_abfahrt();
 
-        // Minuten bis zur Abfahrt berechnen
+        // Minuten bis Abfahrt berechnen
         long minutenBis = ChronoUnit.MINUTES.between(now, abfahrtZeit);
 
-        // Störungen zur Abfahrt als DTO-Liste
+        // Störungen als DTO-Liste
         List<StoerungDTO> stoerungen = abfahrt.getStoerungen() != null
                 ? abfahrt.getStoerungen().stream()
-                .map(this::mapToStoerungDTO)
-                .collect(Collectors.toList())
+                .map(this::mapStoerung)
+                .toList()
                 : List.of();
 
         // DTO zurückgeben
@@ -66,17 +86,19 @@ public class AbfahrtService {
                 abfahrt.getLinie().getLiniennummer(),
                 abfahrt.getLinie().getTyp(),
                 abfahrt.getZiel(),
-                abfahrt.getBahnsteig().getBeschreibung(),
-                abfahrt.getGeplantAbfahrt(),
-                abfahrt.getTatsaechlicheAbfahrt(),
-                abfahrt.getVerzoegerungMinuten(),
+                abfahrt.getBahnsteig().getBezeichnung(),
+                abfahrt.getGeplante_abfahrt(),
+                abfahrt.getTatsaechliche_abfahrt(),
+                abfahrt.getVerzoegerung_minuten(),
                 minutenBis,
                 stoerungen
         );
     }
 
-    // Wandelt eine Störung in ein StörungDTO um
-    private StoerungDTO mapToStoerungDTO(Stoerung stoerung) {
+    // ─────────────────────────────────────────────────────
+    //   STÖRUNG MAPPEN
+    // ─────────────────────────────────────────────────────
+    private StoerungDTO mapStoerung(Stoerung stoerung) {
         return new StoerungDTO(
                 stoerung.getTyp(),
                 stoerung.getNachricht()

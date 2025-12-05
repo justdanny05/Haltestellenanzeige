@@ -1,28 +1,29 @@
-// Bahnsteig.java
 package ae2.anzeigetafel.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
-@Entity                             // Markiert die Klasse als Datenbank-Entity
-@Data                               // Lombok: generiert Getter/Setter/toString/etc.
-@Table(name = "bahnsteig")          // Verknüpfung mit der Tabelle "bahnsteig"
+@Entity
+@Data
+@Table(name = "bahnsteig")
 public class Bahnsteig {
 
-    @Id                              // Primärschlüssel
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // Automatische ID-Erzeugung (IDENTITY = AutoIncrement in SQLite/PostgreSQL)
-    private Integer id;
+    @Column(name = "bahnsteig_id")
+    private Integer bahnsteig_id;
 
-    @ManyToOne                        // Viele Bahnsteige gehören zu einer Haltestelle
-    @JoinColumn(name = "haltestelle_id")
-    // Fremdschlüssel in der Tabelle "bahnsteig", verweist auf haltestelle.id
+    // STRING-Feld – keine Beziehung!
+    @Column(name = "bezeichnung")
+    private String bezeichnung;
+
+    // FK zu Haltestelle
+    @ManyToOne
+    @JoinColumn(name = "haltestelle_id", nullable = false)
     private Haltestelle haltestelle;
 
-    private String beschreibung;      // Name/Bezeichnung des Bahnsteigs (z. B. "Gleis 1")
-
+    // Alle Abfahrten, die an diesem Bahnsteig stattfinden
     @OneToMany(mappedBy = "bahnsteig")
-    // Eine Haltestelle → viele Abfahrten, die an diesem Bahnsteig stattfinden
-    private List<Abfahrt> abfahrten;
+    private List<Abfahrt> bahnsteig;
 }

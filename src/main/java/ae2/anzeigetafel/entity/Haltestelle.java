@@ -11,7 +11,7 @@ public class Haltestelle {
 
     @Id                           // Primärschlüssel
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer haltestelle_id;
 
     private String name;          // Name der Haltestelle
 
@@ -20,5 +20,5 @@ public class Haltestelle {
     private Verkehrsunternehmen verkehrsunternehmen;
 
     @OneToMany(mappedBy = "haltestelle")
-    private List<Bahnsteig> bahnsteige; // Alle Bahnsteige dieser Haltestelle
+    private List<Bahnsteig> bahnsteig; // Alle Bahnsteige dieser Haltestelle
 }
