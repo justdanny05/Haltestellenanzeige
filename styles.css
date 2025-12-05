@@ -5,96 +5,127 @@ body {
     margin: 0 15px 0 15px;
     font-family: Arial, Helvetica, sans-serif;
     color: #D7E1B3;
+    font-weight: bold;
 }
 
-header {
+main {
     background-color: #16447D;
-    margin: 20px;
+    margin-bottom: 200px;
     margin-top: 50px;
     margin-left: 50px;
     margin-right: 50px;
 }
 
 main {
-    margin: 20px;
-    margin-bottom: 50px;
-    margin-left: 50px;
-    margin-right: 50px;
-    padding-top: 200px;
     display: grid;
     background-color: #16447D;
     color: #D7E1B3;
 }
 
-.grid-container {
+.parent {
     display: grid;
-    grid-template-columns: 6% 6% 6% 6% 6% 6% 6% 6% 6% 6% 6% 6% 6% 6% 16%;
-    grid-template-rows: 20% 20% 20% 20% 20%;
- /*   grid-template-columns: 25% 25% 1rem 1rem;
-    grid-template-rows: 25% 25% 1rem 1rem;
-    padding: 20px;
-    font-size: 24px;
-    */
-    grid-gap: 1px;
-   
+    grid-template-columns: 2fr repeat(6, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    grid-column-gap: 4px;
+    grid-row-gap: 0px;
 }
 
-.grid-item {
+/* nächste Haltestellen aktueller Zug */
+.div1 { grid-area: 2 / 2 / 3 / 5;
+    font-size: 40px;}
 
+/* Zielbahnhof aktueller Zug */    
+.div2 { grid-area: 3 / 2 / 4 / 5;
+    font-size: 80px;}
+
+/* Uhrzeit */    
+.div3 { grid-area: 1 / 6 / 2 / 8; 
+    font-size: 100px;
+    margin-right: 10px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: end;
 }
 
-.gleis  {
-    font-size: 128px; 
-  /*  margin-left: -180px; 
-    margin-top: -180px; */
-    grid-row-start: 1;
-    grid-row-end: 5;
-    justify-items: start;
-}
+/* Bezeichnung aktueller Zug */    
+.div4 { grid-area: 2 / 6 / 3 / 8; 
+    margin-right: 10px;
+    margin-left: 10px;
+    font-size: 80px;
+    display: flex;
+    justify-content: end;}
 
-.uhrzeit {
-    grid-column: 15/16;
-    grid-row-start: 1;
-    grid-row-end: 2;
-    font-size: 70px; 
-   /* margin-right: -180px; 
-    margin-top: -180px; */
-}
+/* Zugabteile */    
+.div5 { grid-area: 3 / 5 / 4 / 8; 
+    font-size: 80px;
+    display: flex;
+    justify-content: end;
+    margin-right: 10px;
+    margin-left: 10px;}
 
-.zugname {
-    grid-column: 15;
-    grid-row-start: 3;
-    grid-row-end: 3;
-    font-size: 40px; 
-}
+/* Blauer Zwischenbalken */    
+.div6 { grid-area: 5 / 1 / 6 / 8; 
+    background-color: #1E2736;
+    margin-top: 15px;
+    margin-bottom: 15px;}
 
-.zugabteile {
-    grid-column-start: 14;
-    grid-column-end: 16;
-    grid-row-start: 4;
-    grid-row-end: 4;
-    font-size: 30px; 
-    justify-content: center;
-}
+/* Nächste Haltestellen Folgezug */    
+.div7 { grid-area: 6 / 2 / 7 / 5; 
+    font-size: 40px;}
 
-.folgehaltestellen {
-    grid-column-start: 3;
-    grid-column-end: 7;
-    grid-row-start: 2;
-    grid-row-end: 2;
-    font-size: 20px; 
-    justify-content: center;
-}
+/* Zielbahnhof Folgezug */
+.div8 { grid-area: 7 / 2 / 8 / 5; 
+    font-size: 80px;}
 
-.endhaltestelle {
-    grid-column-start: 3;
-    grid-column-end: 7;
-    grid-row-start: 3;
-    grid-row-end: 3;
-    font-size: 40px; 
-    justify-content: center;
-}
+/* */    
+.div9 { grid-area: 8 / 1 / 9 / 8;
+    background-color: #D7E1B3;
+    margin-top: 40px;
+    margin-bottom: 40px;}
 
-.grid-container2 {
-    border-top: #D7E1B3 solid;
+/* Senkrechtlinien */    
+.div10 { grid-area: 1 / 1 / 13 / 2; 
+    border-right: 0.5em solid #1E2736;
+    }
+.div14 { grid-area: 1 / 4 / 13 / 2; 
+    border-right: 0.5em solid #1E2736;
+    } 
+.div15 { grid-area: 1 / 6 / 13 / 2; 
+    border-right: 0.5em solid #1E2736;
+    } 
+
+/* Gleisname */    
+.div11 { grid-area: 1 / 1 / 4 / 2; 
+    font-size: 300px;
+    justify-items: start;}
+
+/* Folgefolgezug Eins */    
+.div12 { grid-area: 9 / 2 / 10 / 5; 
+    font-size: 40px;}
+
+/* Folgefolgezug Zwei */    
+.div13 { grid-area: 10 / 2 / 11 / 5; 
+    font-size: 40px;}
+
+.div17 {
+    grid-area: 1 / 2 / 2 / 6;
+    background-color:#D7E1B3;
+}    
+/* Animation der Verspätung */    
+.div16 { grid-area: 1 / 2 / 2 / 6;
+    animation: 4s linear 0s infinite reverse bounce;
+    color: #16447D;
+    font-size: 80px;
+    font-weight: bolder;
+    } 
+    :root {
+  overflow: hidden;
+}
+@keyframes bounce {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(50%);
+  }
 }
